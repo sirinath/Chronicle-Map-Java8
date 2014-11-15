@@ -29,15 +29,13 @@ import java.net.InetSocketAddress;
 /**
  * @author Rob Austin.
  */
-public class StatelessClientTest {
-
+public class StatelessClientJava8Test {
 
     @Test
     public void testMapForKeyLambda() throws IOException, InterruptedException {
 
         try (ChronicleMap<Integer, StringBuilder> serverMap = ChronicleMapBuilder.of(Integer.class,
                 StringBuilder.class)
-                .defaultValue(new StringBuilder())
                 .replication((byte) 2, TcpTransportAndNetworkConfig.of(8056)).create()) {
 
             serverMap.put(10, new StringBuilder("Hello World"));
@@ -46,9 +44,13 @@ public class StatelessClientTest {
                     .class, StringBuilder.class)
                     .statelessClient(new InetSocketAddress("localhost", 8056)).create()) {
 
-                String actual = (String) ((StatelessChronicleMap) statelessMap).mapForKey(10, b -> b.toString());
+                String actual = statelessMap.mapForKey(10, Object::toString);
 
                 Assert.assertEquals("Hello World", actual);
+
+                String actual2 = statelessMap.updateForKey(10, s -> s + " Updated");
+
+                Assert.assertEquals("Hello World Updated", actual2);
             }
         }
     }
@@ -56,8 +58,31 @@ public class StatelessClientTest {
     @Test
     public void testMapForKeyLambdaUnknownEntry() throws IOException, InterruptedException {
 
-        try (ChronicleMap<Integer, StringBuilder> serverMap = ChronicleMapBuilder.of(Integer.class,
-                StringBuilder.class)
+        try (ChronicleMap<Integer, StringBuilder> map = ChronicleMapBuilder
+                .of(Integer.class, StringBuilder.class)
+                .defaultValue(new StringBuilder())
+                .create()) {
+            map.put(10, new StringBuilder("Hello World"));
+
+            String actual = map.mapForKey(1, StringBuilder::toString);
+
+            Assert.assertEquals(null, actual);
+
+            String actual2 = map.updateForKey(1, s -> {
+                s.append(" Updated");
+                return s.toString();
+            });
+
+            Assert.assertEquals(" Updated", actual2);
+
+            String actual3 = map.mapForKey(1, StringBuilder::toString);
+
+            Assert.assertEquals(" Updated", actual3);
+        }
+
+
+        try (ChronicleMap<Integer, StringBuilder> serverMap = ChronicleMapBuilder
+                .of(Integer.class, StringBuilder.class)
                 .defaultValue(new StringBuilder())
                 .replication((byte) 2, TcpTransportAndNetworkConfig.of(8056)).create()) {
 
@@ -67,9 +92,20 @@ public class StatelessClientTest {
                     .class, StringBuilder.class)
                     .statelessClient(new InetSocketAddress("localhost", 8056)).create()) {
 
-                String actual = (String) ((StatelessChronicleMap) statelessMap).mapForKey(1, b -> b.toString());
+                String actual = statelessMap.mapForKey(1, StringBuilder::toString);
 
-                Assert.assertEquals("", actual);
+                Assert.assertEquals(null, actual);
+
+                String actual2 = statelessMap.updateForKey(1, s -> {
+                    s.append(" Updated");
+                    return s.toString();
+                });
+
+                Assert.assertEquals(" Updated", actual2);
+
+                String actual3 = statelessMap.mapForKey(1, StringBuilder::toString);
+
+                Assert.assertEquals(" Updated", actual3);
             }
         }
     }
