@@ -35,14 +35,14 @@ public class StatelessClientTest {
     @Test
     public void testMapForKeyLambda() throws IOException, InterruptedException {
 
-        try (ChronicleMap<Integer, StringBuilder> serverMap = ChronicleMapOnHeapUpdatableBuilder.of(Integer.class,
+        try (ChronicleMap<Integer, StringBuilder> serverMap = ChronicleMapBuilder.of(Integer.class,
                 StringBuilder.class)
                 .defaultValue(new StringBuilder())
                 .replication((byte) 2, TcpTransportAndNetworkConfig.of(8056)).create()) {
 
             serverMap.put(10, new StringBuilder("Hello World"));
 
-            try (ChronicleMap<Integer, StringBuilder> statelessMap = ChronicleMapOnHeapUpdatableBuilder.of(Integer
+            try (ChronicleMap<Integer, StringBuilder> statelessMap = ChronicleMapBuilder.of(Integer
                     .class, StringBuilder.class)
                     .statelessClient(new InetSocketAddress("localhost", 8056)).create()) {
 
@@ -56,14 +56,14 @@ public class StatelessClientTest {
     @Test
     public void testMapForKeyLambdaUnknownEntry() throws IOException, InterruptedException {
 
-        try (ChronicleMap<Integer, StringBuilder> serverMap = ChronicleMapOnHeapUpdatableBuilder.of(Integer.class,
+        try (ChronicleMap<Integer, StringBuilder> serverMap = ChronicleMapBuilder.of(Integer.class,
                 StringBuilder.class)
                 .defaultValue(new StringBuilder())
                 .replication((byte) 2, TcpTransportAndNetworkConfig.of(8056)).create()) {
 
             serverMap.put(10, new StringBuilder("Hello World"));
 
-            try (ChronicleMap<Integer, StringBuilder> statelessMap = ChronicleMapOnHeapUpdatableBuilder.of(Integer
+            try (ChronicleMap<Integer, StringBuilder> statelessMap = ChronicleMapBuilder.of(Integer
                     .class, StringBuilder.class)
                     .statelessClient(new InetSocketAddress("localhost", 8056)).create()) {
 
