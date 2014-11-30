@@ -60,7 +60,6 @@
             <artifactId>chronicle-map</artifactId>
         </dependency>
 
-
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -137,6 +136,5 @@
         <developerConnection>scm:git:git@github.com:OpenHFT/Chronicle-Map-Java8.git</developerConnection>
         <tag>master</tag>
     </scm>
-
 
 </project>

@@ -25,7 +25,6 @@ import org.junit.Test;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-
 /**
  * @author Rob Austin.
  */
@@ -79,7 +78,6 @@ public class StatelessClientJava8Test {
 
             Assert.assertEquals(" Updated", actual3);
         }
-
 
         try (ChronicleMap<Integer, StringBuilder> serverMap = ChronicleMapBuilder
                 .of(Integer.class, StringBuilder.class)
