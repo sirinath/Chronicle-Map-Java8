@@ -12,7 +12,6 @@ public class PingPongMapMain {
                 .entrySize(32)
                 .entries(keys)
                 .create()) {
-
 //            LongValue lv = DataValueClasses.newDirectReference(LongValue.class);
             long start = System.currentTimeMillis();
             long value = 0;

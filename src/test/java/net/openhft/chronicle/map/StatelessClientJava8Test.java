@@ -36,13 +36,11 @@ public class StatelessClientJava8Test {
         try (ChronicleMap<Integer, StringBuilder> serverMap = ChronicleMapBuilder.of(Integer.class,
                 StringBuilder.class)
                 .replication((byte) 2, TcpTransportAndNetworkConfig.of(8056)).create()) {
-
             serverMap.put(10, new StringBuilder("Hello World"));
 
             try (ChronicleMap<Integer, StringBuilder> statelessMap = ChronicleMapBuilder.of(Integer
                     .class, StringBuilder.class)
                     .statelessClient(new InetSocketAddress("localhost", 8056)).create()) {
-
                 String actual = statelessMap.mapForKey(10, Object::toString);
 
                 Assert.assertEquals("Hello World", actual);
@@ -83,13 +81,11 @@ public class StatelessClientJava8Test {
                 .of(Integer.class, StringBuilder.class)
                 .defaultValue(new StringBuilder())
                 .replication((byte) 2, TcpTransportAndNetworkConfig.of(8056)).create()) {
-
             serverMap.put(10, new StringBuilder("Hello World"));
 
             try (ChronicleMap<Integer, StringBuilder> statelessMap = ChronicleMapBuilder.of(Integer
                     .class, StringBuilder.class)
                     .statelessClient(new InetSocketAddress("localhost", 8056)).create()) {
-
                 String actual = statelessMap.mapForKey(1, StringBuilder::toString);
 
                 Assert.assertEquals(null, actual);
