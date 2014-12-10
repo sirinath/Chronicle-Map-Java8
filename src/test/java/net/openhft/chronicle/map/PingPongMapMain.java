@@ -15,13 +15,16 @@ public class PingPongMapMain {
 //            LongValue lv = DataValueClasses.newDirectReference(LongValue.class);
             long start = System.currentTimeMillis();
             long value = 0;
-            Mutator<MyLong, Long> mutator = v -> v.addValue(1);
+            if (true) throw new UnsupportedOperationException("Not supported in Map 2.0");
+/*
+            Mutator<MyLong, Long> mutator = v -> v.addAtomicValue(1);
             for (int j = 0; j < keys; j++) {
                 String key = "hello-" + j;
 //                for (int i = 0; i < 10; i++) {
                 value = map.updateForKey(key, mutator);
 //                }
             }
+*/
             long time = System.currentTimeMillis() - start;
             System.out.println("value=" + value + " took " + time + " ms");
 /*
@@ -38,5 +41,5 @@ interface MyLong {
 
     public void setValue(long l);
 
-    public long addValue(long l);
+    public long addAtomicValue(long l);
 }
