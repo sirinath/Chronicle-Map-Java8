@@ -9,7 +9,7 @@ public class PingPongMapMain {
         int keys = 10_000_000;
         try (ChronicleMap<String, MyLong> map = ChronicleMapBuilder
                 .of(String.class, MyLong.class)
-                .entrySize(32)
+                .averageValueSize(32)
                 .entries(keys)
                 .create()) {
 //            LongValue lv = DataValueClasses.newDirectReference(LongValue.class);
