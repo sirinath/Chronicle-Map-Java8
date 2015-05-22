@@ -96,5 +96,4 @@ public class StatelessClientJava8Test {
             }
         }
     }
-
 }
